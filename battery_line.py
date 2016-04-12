@@ -78,6 +78,8 @@ for line in f:
     if state == 7:
         break
 
+Temp = extrat_num(rawTemp)
+Pers = extrat_num(rawPers)
 _Data = []
 for line in rawData:
     _Data.append(extrat_num([line]))
