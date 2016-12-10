@@ -1,0 +1,5 @@
+Description:
+    A script draw battery curve from kernel's dts file.
+
+Usage:
+    ./draw.py /path/to/dts

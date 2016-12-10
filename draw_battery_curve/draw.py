@@ -1,7 +1,14 @@
 #!/usr/bin/env python
-import re
+# Author: ZhouZhuo
+
 import sys
+if len(sys.argv) != 2:
+    print("*** Specify a file.")
+    sys.exit(1)
+
+import re
 import matplotlib.pyplot as plt
+from config import *
 
 def extrat_num(L):
     outL = []
@@ -10,9 +17,6 @@ def extrat_num(L):
             outL.append(int(num))
     return outL
 
-if len(sys.argv) != 2:
-    print("*** Specific a file.")
-    sys.exit(1)
 filename = sys.argv[1]
 f = open(filename)
 
@@ -22,13 +26,13 @@ rawData = []
 state = 0
 
 def find_lut(line):
-    if re.findall(r'qcom,pc-temp-ocv-lut {', line) != []:
+    if re.findall(OcvLutPrefixPattern, line) != []:
         global state
         state = 1
         find_col(line)
 
 def find_col(line):
-    if re.findall(r'qcom,lut-col-legend =', line) != []:
+    if re.findall(lutColPrefixPattern, line) != []:
         global state
         state = 2
         read_col(line)
@@ -40,7 +44,7 @@ def read_col(line):
         state = 3
 
 def find_row(line):
-    if re.findall(r'qcom,lut-row-legend =', line) != []:
+    if re.findall(lutRowPrefixPattern, line) != []:
         global state
         state = 4
         read_row(line)
@@ -52,7 +56,7 @@ def read_row(line):
         state = 5
 
 def find_dat(line):
-    if re.findall(r'qcom,lut-data =', line) != []:
+    if re.findall(lutDataPrefixPattern, line) != []:
         global state
         state = 6
         read_dat(line)
@@ -73,24 +77,25 @@ parse_tab = {
         6: read_dat
         }
 
-for line in f:
-    parse_tab[state](line)
-    if state == 7:
-        break
-
-Temp = extrat_num(rawTemp)
-Pers = extrat_num(rawPers)
-_Data = []
-for line in rawData:
-    _Data.append(extrat_num([line]))
-Data = []
-for n in range(len(_Data[0])):
-    colData = []
-    for row in _Data:
-        colData.append(row[n])
-    Data.append(colData)
-
-for n in range(len(Temp)):
-    plt.plot(Pers, Data[n], label='Temp = %d'%Temp[n])
-plt.legend(loc=0)
-plt.show()
+if __name__ == "__main__":
+    for line in f:
+        parse_tab[state](line)
+        if state == 7:
+            break
+    
+    Temp = extrat_num(rawTemp)
+    Pers = extrat_num(rawPers)
+    _Data = []
+    for line in rawData:
+        _Data.append(extrat_num([line]))
+    Data = []
+    for n in range(len(_Data[0])):
+        colData = []
+        for row in _Data:
+            colData.append(row[n])
+        Data.append(colData)
+    
+    for n in range(len(Temp)):
+        plt.plot(Pers, Data[n], label='Temp = %d'%Temp[n])
+    plt.legend(loc=0)
+    plt.show()

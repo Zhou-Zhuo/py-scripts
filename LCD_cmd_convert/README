@@ -1,0 +1,6 @@
+Description:
+    A script convert LCD panel commands from kernel's dts format
+    to lk's array format.
+
+Usage:
+    $ ./convert.py /path/to/dts

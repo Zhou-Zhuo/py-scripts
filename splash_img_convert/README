@@ -1,0 +1,6 @@
+Description:
+	A script generate Android splash.img from image file. Auto fit target
+	panel size.
+
+Usage:
+	./convert.py /path/to/image
