@@ -1,0 +1,19 @@
+Description:
+    A script generate battery curve needed in battery data dts.
+
+Usage:
+    ./generate.py /path/to/curve
+
+Note:
+    输入curve文件格式:
+    START <temp1>
+    <ocv> <capacity>
+    ...   ...
+    END
+    START <temp2>
+    <ocv> <capacity>
+    ...   ...
+    END
+    ....
+
+    如curve_example所示

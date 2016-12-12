@@ -82,6 +82,7 @@ if __name__ == "__main__":
         parse_tab[state](line)
         if state == 7:
             break
+    f.close()
     
     Temp = extrat_num(rawTemp)
     Pers = extrat_num(rawPers)
