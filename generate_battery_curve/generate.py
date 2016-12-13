@@ -19,7 +19,7 @@ outTempOcvListMap={}
 TempBattOcvListMap={}
 
 def find_start(line):
-    match = re.findall(r'START[ \t]+([0-9]+)', line)
+    match = re.findall(r'START[ \t]+(-?\d+)', line)
     if len(match) == 1:
         global state
         global parsingTemp
@@ -30,7 +30,7 @@ def find_start(line):
         state = 1
 
 def fill_map(line):
-    match = re.findall(r'([0-9,.]*)[\t ]+([0-9,.]+)', line)
+    match = re.findall(r'(\d+(?:\.\d+)?)[\t ]+(\d+(?:\.\d+)?)', line)
     if len(match) == 1:
         ocv, batt = match[0]
         TempOcvListMap[parsingTemp].append(float(ocv))

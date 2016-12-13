@@ -13,7 +13,7 @@ from config import *
 def extrat_num(L):
     outL = []
     for line in L:
-        for num in re.findall(r'[-]?\d+', line):
+        for num in re.findall(r'-?\d+', line):
             outL.append(int(num))
     return outL
 
