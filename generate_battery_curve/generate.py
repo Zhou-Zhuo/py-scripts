@@ -15,6 +15,8 @@ TempBattListMap={}
 # { temp : [ ocv ] }
 TempOcvListMap={}
 outTempOcvListMap={}
+# { temp : [{ batt : [ ocv ] }] }
+TempBattOcvRangeListMap={}
 # { temp : [{ batt : ocv }] }
 TempBattOcvListMap={}
 
@@ -56,8 +58,18 @@ if __name__ == '__main__':
     TempOcvListMap = {temp : [int(round(1000*ocv))
         for ocv in TempOcvListMap[temp]]
         for temp in TempBattListMap}
-    TempBattOcvListMap = {temp: {TempBattListMap[temp][i] : TempOcvListMap[temp][i]
-        for i in range(len(TempBattListMap[temp]))}
+    TempBattOcvRangeListMap = {temp : {batt : []
+        for batt in range(100+1)}
+        for temp in TempBattListMap}
+    for temp in TempBattListMap:
+        for i in range(len(TempBattListMap[temp])):
+            batt = TempBattListMap[temp][i]
+            ocv = TempOcvListMap[temp][i]
+            TempBattOcvRangeListMap[temp][batt].append(ocv)
+    # midle value of already sorted list
+    midleVal = lambda L : L[len(L)/2]
+    TempBattOcvListMap = {temp : {batt : midleVal(TempBattOcvRangeListMap[temp][batt])
+        for batt in TempBattOcvRangeListMap[temp]}
         for temp in TempBattListMap}
     outTempOcvListMap = {temp : [TempBattOcvListMap[temp][batt]
         for batt in CareBattList]
